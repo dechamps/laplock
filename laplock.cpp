@@ -46,7 +46,7 @@ static void systemError(wchar_t* what)
 
 static LRESULT CALLBACK windowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (uMsg != WM_POWERBROADCAST || wParam != PBT_POWERSETTINGCHANGE)
+	if (uMsg != WM_POWERBROADCAST || wParam != PBT_POWERSETTINGCHANGE || GetSystemMetrics(SM_REMOTESESSION))
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 
 	const POWERBROADCAST_SETTING* setting = reinterpret_cast<const POWERBROADCAST_SETTING*>(lParam);
