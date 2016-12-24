@@ -44,16 +44,6 @@ static void systemError(wchar_t* what)
 	exit(EXIT_FAILURE);
 }
 
-static void error(wchar_t* what)
-{
-	std::wstringstream message;
-	message << L"A system error occured within laplock." << std::endl;
-	message << L"Operation: " << what << std::endl;
-	MessageBox(NULL, message.str().c_str(), L"laplock error", MB_OK | MB_ICONERROR);
-
-	exit(EXIT_FAILURE);
-}
-
 static LRESULT CALLBACK windowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (uMsg != WM_POWERBROADCAST || wParam != PBT_POWERSETTINGCHANGE)
@@ -111,9 +101,9 @@ static HWND createWindow(HINSTANCE instance)
 static void registerNotification(HWND window)
 {
 	if (!RegisterPowerSettingNotification(window, &GUID_MONITOR_POWER_ON, DEVICE_NOTIFY_WINDOW_HANDLE))
-		error(L"cannot register GUID_MONITOR_POWER_ON power setting notification");
+		systemError(L"cannot register GUID_MONITOR_POWER_ON power setting notification");
 	if (!RegisterPowerSettingNotification(window, &GUID_LIDSWITCH_STATE_CHANGE, DEVICE_NOTIFY_WINDOW_HANDLE))
-		error(L"cannot register GUID_LIDSWITCH_STATE_CHANGE power setting notification");
+		systemError(L"cannot register GUID_LIDSWITCH_STATE_CHANGE power setting notification");
 }
 
 static WPARAM messageLoop()
