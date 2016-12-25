@@ -21,6 +21,9 @@
 
 #include <windows.h>
 
+namespace laplock {
+namespace {
+
 class LogLine {
 public:
 	~LogLine() {
@@ -189,4 +192,12 @@ int CALLBACK WinMain(HINSTANCE instance, HINSTANCE, LPSTR commandLine, int)
 	WPARAM result = messageLoop();
 	LogLine() << "laplock terminating";
 	return result;
+}
+
+}
+}
+
+int CALLBACK WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int cmdShow)
+{
+	return laplock::WinMain(instance, prevInstance, commandLine, cmdShow);
 }
