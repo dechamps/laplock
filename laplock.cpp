@@ -14,8 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <chrono>
 #include <cstdlib>
 #include <fstream>
+#include <iomanip>
 #include <memory>
 #include <sstream>
 
@@ -26,6 +28,15 @@ namespace {
 
 class LogLine {
 public:
+	LogLine() {
+		if (!logfile) return;
+		auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		tm localnow;
+		if (localtime_s(&localnow, &now) == 0) {
+			*logfile << std::put_time(&localnow, L"%F %T ");
+		}
+	}
+
 	~LogLine() {
 		if (!logfile) return;
 		*logfile << std::endl;
